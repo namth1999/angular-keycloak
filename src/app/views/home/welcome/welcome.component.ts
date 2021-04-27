@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {ProfileService} from '../service/profile.service';
 
 @Component({
   selector: 'app-welcome',
@@ -10,11 +9,10 @@ import {ProfileService} from '../service/profile.service';
 export class WelcomeComponent implements OnInit {
   result: any;
 
-  constructor(private router: Router, private profileService: ProfileService) {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
-    this.result = this.profileService.getProducts().subscribe(res => this.result = res);
   }
 
   showProfile(): void {

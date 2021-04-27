@@ -6,7 +6,6 @@ export const environment = {
   production: false,
   apis: {
     getProducts: '/api/products',
-    mockAPI: 'https://6086e411a3b9c200173b7247.mockapi.io/api/adad'
   }
 };
 
