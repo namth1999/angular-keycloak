@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apis: {
+    getUserInfo: '/keycloak/users?username=',
     getProducts: '/api/products',
   }
 };

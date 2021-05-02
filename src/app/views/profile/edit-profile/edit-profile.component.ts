@@ -3,6 +3,7 @@ import {KeycloakService} from 'keycloak-angular';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {SrpingbootBeService} from '../../srpingboot-be.service';
+import {AdminService} from '../../admin.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -13,11 +14,14 @@ export class EditProfileComponent implements OnInit, OnDestroy {
 
   result: any;
 
-  user = '';
+  userName = '';
+
+  user: any;
 
   unsub$ = new Subject<void>();
 
-  constructor(private keycloakService: KeycloakService, private springbootBeService: SrpingbootBeService) {
+  constructor(private keycloakService: KeycloakService, private springbootBeService: SrpingbootBeService,
+              private adminService: AdminService) {
   }
 
   ngOnDestroy(): void {
@@ -31,11 +35,15 @@ export class EditProfileComponent implements OnInit, OnDestroy {
       console.log(res);
       this.result = res;
     });
+    this.adminService.getUserInfo().pipe(takeUntil(this.unsub$)).subscribe(res => {
+      console.log(res);
+      this.user = res;
+    });
   }
 
 
   private initializeUserOptions(): void {
-    this.user = this.keycloakService.getUsername();
+    this.userName = this.keycloakService.getUsername();
   }
 
   logout(): void {
