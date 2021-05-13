@@ -2,6 +2,7 @@ const PROXY_CONFIG = [
   {
     context: [
       '/api/products',
+      '/api/upload',
     ],
     target: "http://localhost:8083",
     secure: false,

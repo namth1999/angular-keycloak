@@ -1,11 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { ToastrModule } from 'ngx-toastr';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import {CoreModule, KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
-import { initializeKeycloak } from '../app/utility/app.init';
+import { initializeKeycloak } from './utility/app.init';
 import {CommonModule} from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -18,7 +20,15 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     KeycloakAngularModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-center',
+      closeButton: true,
+      enableHtml: true,
+      preventDuplicates: true,
+      maxOpened: 1
+    }),
   ],
   providers: [
     {

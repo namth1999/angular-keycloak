@@ -7,6 +7,7 @@ export const environment = {
   apis: {
     getUserInfo: '/keycloak/users?username=',
     getProducts: '/api/products',
+    uploadFile: '/api/upload',
   }
 };
 

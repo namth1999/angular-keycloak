@@ -4,6 +4,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {SrpingbootBeService} from '../../srpingboot-be.service';
 import {AdminService} from '../../admin.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-profile',
@@ -11,6 +12,10 @@ import {AdminService} from '../../admin.service';
   styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent implements OnInit, OnDestroy {
+
+  files: File[];
+  notImageFile: File[];
+  imagesUrl: any[];
 
   result: any;
 
@@ -21,7 +26,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
   unsub$ = new Subject<void>();
 
   constructor(private keycloakService: KeycloakService, private springbootBeService: SrpingbootBeService,
-              private adminService: AdminService) {
+              private adminService: AdminService, private toastService: ToastrService) {
   }
 
   ngOnDestroy(): void {
@@ -50,4 +55,51 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     this.keycloakService.logout('http://localhost:4200');
   }
 
+  fileChange($event): void {
+    this.imagesUrl = [];
+    this.notImageFile = [];
+
+    const files: FileList = $event.target.files;
+    if (this.files) {
+      this.files.push(...Array.from(files));
+    } else {
+      this.files = Array.from(files);
+    }
+
+    if (this.files.length > 0) {
+      this.files.forEach(file => {
+        if (file.size > 10485760) {
+          this.toastService.error('Large file (>10MB)');
+          return;
+        }
+
+        if (this.isFileImage(file)) {
+          const reader = new FileReader();
+          reader.readAsDataURL(file); // read file as data url
+          reader.onload = (event: any) => { // called once readAsDataURL is completed
+            this.imagesUrl.push(event.target.result);
+          };
+        } else {
+          this.notImageFile.push(file);
+        }
+      });
+
+    }
+  }
+
+  isFileImage(file): boolean {
+    return file && file.type.split('/')[0] === 'image';
+  }
+
+  upload(): void {
+    const formData = new FormData();
+    if (this.files) {
+      this.files.forEach(file => {
+        formData.append('files', file);
+      });
+    }
+    this.springbootBeService.uploadFile(formData).subscribe(res => {
+      console.log(res);
+    });
+  }
 }

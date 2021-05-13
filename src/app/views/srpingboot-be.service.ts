@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import {KeycloakService} from 'keycloak-angular';
 
@@ -11,7 +11,7 @@ import {KeycloakService} from 'keycloak-angular';
 export class SrpingbootBeService {
 
 
-  constructor(private http: HttpClient, private keycloakService: KeycloakService) {
+  constructor(private http: HttpClient) {
   }
 
   getProducts(): Observable<any> {
@@ -21,4 +21,10 @@ export class SrpingbootBeService {
         return throwError(httpError);
       }));
   }
+
+  uploadFile(formData: FormData): Observable<any> {
+    return this.http.post(environment.apis.uploadFile, formData).pipe(catchError((httpError: any) => {
+      return throwError(httpError);
+    }));
   }
+}

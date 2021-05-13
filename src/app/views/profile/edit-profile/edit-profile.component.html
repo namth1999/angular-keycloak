@@ -2,3 +2,27 @@
 <h2>{{result|json}}</h2>
 <h2>{{user|json}}</h2>
 <button (click)="logout()">Logout</button>
+<div class="row mx-0">
+  <div class="col-md-12 px-0">
+    <p class="my-0 title">Hình ảnh</p>
+  </div>
+  <div class="col-md-6 mb-3">
+    <input type="file" class="custom-file-input" #imgInput (change)="fileChange($event)"
+           id="validatedCustomFile" multiple required>
+  </div>
+</div>
+<div class="row">
+  <div *ngFor="let url of imagesUrl; let i = index"
+       class="mt-3 col-md-3 file-item">
+    <img alt="file-img" [src]="url">
+  </div>
+</div>
+<div class="row mx-0">
+  <div *ngFor="let file of notImageFile; let i = index"
+       class="file-item pl-3">
+    <span>{{file.name}}</span>
+  </div>
+</div>
+<div class="row">
+  <button (click)="upload()">UPLOAD NE DMM</button>
+</div>
