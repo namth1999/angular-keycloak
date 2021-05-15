@@ -11,6 +11,15 @@ const PROXY_CONFIG = [
   },
   {
     context: [
+      '/preview',
+    ],
+    target: "http://localhost:8084",
+    secure: false,
+    logLevel: "debug",
+    changeOrigin: true
+  },
+  {
+    context: [
       '/keycloak/users',
     ],
     target: "http://localhost:8080/auth/admin/realms/test-keycloak",
